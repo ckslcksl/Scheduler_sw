@@ -1,0 +1,235 @@
+﻿<local:BaseWindow
+    x:Class="WpfApp3.WindowGanttSchedule"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"
+    xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
+    xmlns:dxschv="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/visual"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:dxschg="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    
+    
+    xmlns:local="clr-namespace:WpfApp3"
+    xmlns:mv="clr-namespace:WpfApp3"
+    mc:Ignorable="d"
+    d:DesignWidth="800"
+    d:DesignHeight="600"
+    d:DataContext="WindowGanttScheduleViewModel">
+
+    <local:BaseWindow.Resources>
+
+
+        <ResourceDictionary>
+
+            <Style x:Key="timelineView.Style" TargetType="dxsch:TimelineView">
+                <Setter Property="ShowInCommandBar" Value="False"/>
+                <Setter Property="AppointmentMinHeight" Value="36"/>
+                <Setter Property="AppointmentMinWidth" Value="40"/>
+                <Setter Property="ResourceMinHeight" Value="44"/>
+                <Setter Property="ResourceMaxHeight" Value="116"/>
+                <Setter Property="SnapToCellsMode" Value="Never"/>
+
+                <Setter Property="HighlightNonworkingHours" Value="True"/>
+            </Style>
+            <DataTemplate x:Key="ResourceHeader.ContentTemplate">
+                <StackPanel>
+                    <dxschv:ResourceHeaderPresenter HorizontalAlignment="Center"/>
+                    <dx:BackgroundPanel Background="FloralWhite"/>
+                    <Border Height="4" Background="WhiteSmoke"/>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+
+    </local:BaseWindow.Resources>
+
+    <local:BaseWindow.DataContext>
+        <mv:WindowGanttScheduleViewModel x:Name="gsvm"/>
+    </local:BaseWindow.DataContext>
+    
+    <DockPanel>
+        
+        <DockPanel DockPanel.Dock="Top" Background="{Binding ElementName=scheduler, Path=Background}">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,12,0" VerticalAlignment="Center" TextBlock.FontSize="14">
+                <Button Name="csvTest" Content="Test" HorizontalAlignment="Right" Margin="1 1 5 1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding ConnectCsvTestCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Button Name="csvCon" Content="CSV" HorizontalAlignment="Right" Margin="1 1 5 1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding ConnectCsvCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Button Name="dbCon" Content="DB" HorizontalAlignment="Right" Margin="5 1 1 1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding ConnectDataBaseCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </StackPanel>
+            <TextBlock Text="Date" MaxHeight="30" Width="35" RenderTransformOrigin="0.5,0.667" TextAlignment="Center" Padding="5" Margin="5">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <ComboBox Name="vDate"  ItemsSource="{Binding VersionDate, Mode=TwoWay}" SelectedItem="{Binding SelectedVersionDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MaxHeight="30" Width="100" RenderTransformOrigin="0.5,0.667">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ChangeVersionDateCommand}" CommandParameter="{Binding ElementName=vDate,Path=SelectedValue}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding PlanStartDate}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="Version" MaxHeight="30" Width="50" RenderTransformOrigin="0.5,0.667" TextAlignment="Center" Padding="5" Margin="5">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <ComboBox Name="version"  ItemsSource="{Binding VersionModels, Mode=TwoWay}" SelectedItem="{Binding SelectedVersion, Mode=OneWayToSource}" MaxHeight="30" Width="140" RenderTransformOrigin="0.5,0.667" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ChangeVersionModelsCommand}"/>
+
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Version}">
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <dxsch:DateNavigationPanel Scheduler="{Binding ElementName=scheduler}">
+                <i:Interaction.Triggers>
+                    
+                </i:Interaction.Triggers>
+            </dxsch:DateNavigationPanel>
+        </DockPanel>
+        <dxsch:SchedulerControl
+            x:Name="scheduler"
+            Padding="0"
+            ShowBorder="True"
+            GroupType="Resource"
+            Start="{Binding Start, Mode=TwoWay}"
+            AllowAppointmentConflicts="True"
+            ShowDateNavigationPanel="False"
+            CommandBarStyle="Ribbon"
+            ActiveViewIndex="0" KeepResourceDistanceOnAppointmentDrag="True" DropAppointment="scheduler_DropAppointment" BorderBrush="Black" 
+            DragAppointmentOver="scheduler_DragAppointmentOver" SelectedAppointmentsSource="{Binding SelectedAppointments,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <dxsch:SchedulerControl.RibbonActions>
+                <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="15">
+                    <dxr:RibbonPageGroup Caption="Select all">
+                        <dxb:BarButtonItem    Content="Select all the same LOTs"
+                                              ItemClick="SelectSameLot"
+                                              LargeGlyph="{dx:DXImageOffice2013 Image=Apply_32x32.png}"/>
+                    </dxr:RibbonPageGroup>
+                </dxb:InsertAction>
+                <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Appointment}" Index="15">
+                    <dxr:RibbonPageGroup Caption="Select all">
+                        <dxb:BarButtonItem    Content="Select all the same LOTs"
+                                              ItemClick="SelectSameLot"
+                                              LargeGlyph="{dx:DXImageOffice2013 Image=Apply_32x32.png}"/>
+                    </dxr:RibbonPageGroup>
+                </dxb:InsertAction>
+                <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="10">
+                    <dxr:RibbonPageGroup Caption="Refresh">
+                        <dxb:BarButtonItem    Content="Refresh Scheduler"
+                                              ItemClick="Refresh_Click"
+                                              
+                                              LargeGlyph="{dx:DXImageOffice2013 Image=Refresh_32x32.png}"/>
+                    </dxr:RibbonPageGroup>
+                </dxb:InsertAction>
+                <dxb:ToolbarCheckItem Content="asb"></dxb:ToolbarCheckItem>
+            </dxsch:SchedulerControl.RibbonActions>
+
+            <dxsch:TimelineView x:Name="timelineView" ViewMode="Standard" Style="{StaticResource timelineView.Style}" IntervalDuration="50" IsActive="True" ResourceMinHeight="30" ResourceAutoHeight="True" AppointmentMinHeight="25" AppointmentMinWidth="1" 
+                                ResourceWidth="135" ShowAppointmentStatus="False" ResourceHeaderContentTemplate="{StaticResource ResourceHeader.ContentTemplate}">
+                <dxsch:TimelineView.TimeScales>
+                    <dxsch:TimeScale ScaleUnit="Year" UnitCount="1"/>
+                    <dxsch:TimeScale ScaleUnit="Month" UnitCount="1"/>
+                    <dxsch:TimeScale ScaleUnit="Week" UnitCount="1"/>
+                    <dxsch:TimeScale ScaleUnit="Day" UnitCount="1" MinWidth="5"/>
+                    <dxsch:TimeScale ScaleUnit="Hour" UnitCount="1"/>
+                </dxsch:TimelineView.TimeScales>
+            </dxsch:TimelineView>
+
+            <dxsch:SchedulerControl.LabelItems>
+                <dxsch:AppointmentLabelItem Brush="#FF0000" BrushName="1" Caption="1" Id="1"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#FFC000" BrushName="2" Caption="2" Id="2"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#FFFF00" BrushName="3" Caption="3" Id="3"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#00B050" BrushName="4" Caption="4" Id="4"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#00B0F0" BrushName="5" Caption="5" Id="5"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#0C30A0" BrushName="6" Caption="6" Id="6"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#002060" BrushName="7" Caption="7" Id="7"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#44546A" BrushName="8" Caption="8" Id="8"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#5B9BD5" BrushName="9" Caption="9" Id="9"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#ED7D31" BrushName="10" Caption="10" Id="10"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#A5A5A5" BrushName="11" Caption="11" Id="11"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#FFC000" BrushName="12" Caption="12" Id="12"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#4472C4" BrushName="13" Caption="13" Id="13"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#70AD47" BrushName="14" Caption="14" Id="14"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#44546A" BrushName="15" Caption="15" Id="15"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#8497B0" BrushName="16" Caption="16" Id="16"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#F4B084" BrushName="17" Caption="17" Id="17"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#8EA9DB" BrushName="18" Caption="18" Id="18"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#A9D08E" BrushName="19" Caption="19" Id="19"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#757171" BrushName="20" Caption="20" Id="20"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#C00000" BrushName="21" Caption="21" Id="21"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#F8CBAD" BrushName="22" Caption="22" Id="22"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#548235" BrushName="23" Caption="23" Id="23"></dxsch:AppointmentLabelItem>
+                <dxsch:AppointmentLabelItem Brush="#833C0C" BrushName="24" Caption="24" Id="24"></dxsch:AppointmentLabelItem>
+            </dxsch:SchedulerControl.LabelItems>
+            <dxsch:SchedulerControl.DataSource>
+                <dxsch:DataSource
+                    AppointmentsSource="{Binding ModelAppointments}"
+                    ResourcesSource="{Binding ModelResources}"
+                    ResourceSharing="True">
+                    <dxsch:DataSource.AppointmentMappings>
+                        <dxsch:AppointmentMappings
+                            Id="Id"
+                            AllDay="AllDay"
+                            Type="AppointmentType"
+                            Start="Start"
+                            End="End"
+                            Subject="Subject"
+                            Description="Description"
+                            Location="Location"
+                            ResourceId="CalendarIds"
+                            RecurrenceInfo="RecurrenceInfo"
+                            StatusId="Status"
+                            LabelId="Label"
+                            />
+                    </dxsch:DataSource.AppointmentMappings>
+                    <dxsch:DataSource.ResourceMappings>
+                        <dxsch:ResourceMappings Id="Id" Caption="Name" Visible="IsVisible" Group="Group"/>
+                    </dxsch:DataSource.ResourceMappings>
+                </dxsch:DataSource>
+            </dxsch:SchedulerControl.DataSource>
+        </dxsch:SchedulerControl>
+    </DockPanel>
+</local:BaseWindow>

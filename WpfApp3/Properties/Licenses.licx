@@ -1,0 +1,11 @@
+DevExpress.Xpf.Core.DXTabControl, DevExpress.Xpf.Core.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Editors.CheckEdit, DevExpress.Xpf.Core.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Grid.GridControl, DevExpress.Xpf.Grid.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.WindowsUI.HamburgerMenu, DevExpress.Xpf.Controls.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Navigation.OfficeNavigationBar, DevExpress.Xpf.Controls.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Accordion.AccordionControl, DevExpress.Xpf.Accordion.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Charts.ChartControl, DevExpress.Xpf.Charts.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Diagram.DiagramControl, DevExpress.Xpf.Diagram.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.LayoutControl.DockLayoutControl, DevExpress.Xpf.LayoutControl.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Scheduling.SchedulerControl, DevExpress.Xpf.Scheduling.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Editors.ListBoxEdit, DevExpress.Xpf.Core.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
